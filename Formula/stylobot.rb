@@ -7,28 +7,25 @@ class Stylobot < Formula
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-osx-arm64.tar.gz"
-      sha256 "79c82a5c459a5e1417a0918dc5dcb8b70a636852e289d9ff00b8bd83bc1d64d6"
+      sha256 "dde6c8a63807f79edff2aff4de87afdfe77dbb028e7b13b4856a5925bdd2eed9"
     else
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-osx-x64.tar.gz"
-      sha256 "aa4c2f90f316c7cf17ddb19fe9688a7eeb5f40549adb175cef974e5b26c21cf7"
+      sha256 "2a0b03a5a702c78777d57570f6718ddb612d7d6906bd459e84225b8149721787"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-linux-arm64.tar.gz"
-      sha256 "c4ac3dc78e979a7d0ab76cbf8a2b5f3a588b8aa0e6fd603434c44dc5be47e840"
+      sha256 "b7d81ab3ccac1b8382df39ba4393b5238a94d04fba4db719ef68b5b9746f584a"
     else
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-linux-x64.tar.gz"
-      sha256 "5660d21c1e9b9ff4e16c3dae96dc3c290930f6d8730bba477b68811cc775a5ca"
+      sha256 "d8fa2cfdeb8619852bf9057c24b5e9a2b2928f751e8075dcf915e3fc1b2f16fa"
     end
   end
 
   def install
-    # Everything must be co-located: binary, native libs, and config
-    # .NET looks for appsettings.json relative to AppContext.BaseDirectory
     libexec.install Dir["*"]
-    # Wrapper script that cd's to libexec before running
     (bin/"stylobot").write <<~EOS
       #!/bin/bash
       cd "#{libexec}" && exec ./stylobot "$@"
@@ -50,22 +47,18 @@ class Stylobot < Formula
 
   def caveats
     <<~EOS
-      StyloBot Community Edition installed!
+      StyloBot installed. Free forever. No license required.
 
         stylobot 5080 http://localhost:3000         # Interactive (live table)
         stylobot start 5080 http://localhost:3000   # Background daemon
         stylobot stop                                # Stop daemon
-        stylobot status                              # Check daemon
         stylobot --help                              # All options
 
-      Or use Homebrew services:
+      Homebrew services:
         brew services start stylobot                 # Start as launchd service
         brew services stop stylobot                  # Stop service
 
-      For Cloudflare Tunnel: brew install cloudflared
-
-      Config: #{libexec}/appsettings.json
-      Dashboard: http://localhost:5080/_stylobot
+      Cloudflare Tunnel: brew install cloudflared
       Docs: https://github.com/scottgal/stylobot
     EOS
   end
