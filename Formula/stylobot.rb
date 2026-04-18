@@ -22,13 +22,14 @@ class Stylobot < Formula
   end
 
   def install
-    # Binary and native libs MUST be co-located (SQLite P/Invoke resolution)
-    bin.install "stylobot"
-    bin.install Dir["*.dylib"]
-    bin.install Dir["*.so"]
-    # Config
-    (etc/"stylobot").mkpath
-    (etc/"stylobot").install "appsettings.json" if File.exist?("appsettings.json")
+    # Everything must be co-located: binary, native libs, and config
+    # .NET looks for appsettings.json relative to AppContext.BaseDirectory
+    libexec.install Dir["*"]
+    # Wrapper script that cd's to libexec before running
+    (bin/"stylobot").write <<~EOS
+      #!/bin/bash
+      cd "#{libexec}" && exec ./stylobot "$@"
+    EOS
   end
 
   def caveats
@@ -38,14 +39,13 @@ class Stylobot < Formula
         stylobot                    # Start in demo mode (port 5080)
         stylobot --mode production  # Production mode
 
-      Config: #{etc}/stylobot/appsettings.json
+      Config: #{libexec}/appsettings.json
       Dashboard: http://localhost:5080/_stylobot
       Docs: https://github.com/scottgal/stylobot
-      Upgrade: https://stylobot.net/pricing
     EOS
   end
 
   test do
-    assert_predicate bin/"stylobot", :exist?
+    assert_predicate bin/"stylobot", :executable?
   end
 end
