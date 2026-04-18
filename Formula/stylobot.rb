@@ -35,15 +35,34 @@ class Stylobot < Formula
     EOS
   end
 
+  service do
+    run [opt_bin/"stylobot", "5080", "http://localhost:3000", "--mode", "production", "--verbose"]
+    keep_alive true
+    log_path var/"log/stylobot/stylobot.log"
+    error_log_path var/"log/stylobot/stylobot.error.log"
+    working_dir var/"lib/stylobot"
+  end
+
+  def post_install
+    (var/"lib/stylobot").mkpath
+    (var/"log/stylobot").mkpath
+  end
+
   def caveats
     <<~EOS
       StyloBot Community Edition installed!
 
-        stylobot 5080 http://localhost:3000         # Proxy with bot detection
-        stylobot 5080 http://localhost:3000 --tunnel # + Cloudflare Tunnel
+        stylobot 5080 http://localhost:3000         # Interactive (live table)
+        stylobot start 5080 http://localhost:3000   # Background daemon
+        stylobot stop                                # Stop daemon
+        stylobot status                              # Check daemon
         stylobot --help                              # All options
 
-      For Cloudflare Tunnel support: brew install cloudflared
+      Or use Homebrew services:
+        brew services start stylobot                 # Start as launchd service
+        brew services stop stylobot                  # Stop service
+
+      For Cloudflare Tunnel: brew install cloudflared
 
       Config: #{libexec}/appsettings.json
       Dashboard: http://localhost:5080/_stylobot
