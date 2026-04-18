@@ -1,23 +1,26 @@
 class Stylobot < Formula
   desc "Self-hosted bot detection with 31 detectors, session vectors, and zero PII"
   homepage "https://stylobot.net"
-  version "5.6.3"
+  version "5.6.4"
   license "Unlicense"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-osx-arm64.tar.gz"
-      sha256 "6a618f6580105333d26bae64b7bb1867c26016316da9fb3f446a3fb6f7abc381"
+      sha256 "6fda1e3faf3824678c3b8f591066e3047d7e09448d5c6c6bf7690776cf68ee5b"
     else
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-osx-x64.tar.gz"
+      sha256 "c7d6b9e188ac27337c42db9bd4e3ea87b05e7f75bbf5f200b751e7926181fe11"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-linux-arm64.tar.gz"
+      sha256 "d17c64bde255bd97bc2d4f3c5d2914fb62836c4a32a9aabd422bc73d304eacc6"
     else
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-linux-x64.tar.gz"
+      sha256 "52abab5b87401b9ad4d79d804c29d91df41e47daf61a54eaa63675fa0548b18b"
     end
   end
 
@@ -36,8 +39,11 @@ class Stylobot < Formula
     <<~EOS
       StyloBot Community Edition installed!
 
-        stylobot                    # Start in demo mode (port 5080)
-        stylobot --mode production  # Production mode
+        stylobot 5080 http://localhost:3000         # Proxy with bot detection
+        stylobot 5080 http://localhost:3000 --tunnel # + Cloudflare Tunnel
+        stylobot --help                              # All options
+
+      For Cloudflare Tunnel support: brew install cloudflared
 
       Config: #{libexec}/appsettings.json
       Dashboard: http://localhost:5080/_stylobot
