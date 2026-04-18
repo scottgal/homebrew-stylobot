@@ -22,13 +22,13 @@ class Stylobot < Formula
   end
 
   def install
-    # Install everything to libexec (binary + native libs must be co-located)
-    libexec.install Dir["*"]
-    # Symlink the binary to bin
-    bin.install_symlink libexec/"stylobot"
-    # Install config to etc
+    # Binary and native libs MUST be co-located (SQLite P/Invoke resolution)
+    bin.install "stylobot"
+    bin.install Dir["*.dylib"]
+    bin.install Dir["*.so"]
+    # Config
     (etc/"stylobot").mkpath
-    (etc/"stylobot").install libexec/"appsettings.json" if (libexec/"appsettings.json").exist?
+    (etc/"stylobot").install "appsettings.json" if File.exist?("appsettings.json")
   end
 
   def caveats
