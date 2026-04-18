@@ -22,12 +22,13 @@ class Stylobot < Formula
   end
 
   def install
-    bin.install "stylobot"
-    lib.install Dir["*.dylib"] if OS.mac?
-    lib.install Dir["*.so"] if OS.linux?
+    # Install everything to libexec (binary + native libs must be co-located)
+    libexec.install Dir["*"]
+    # Symlink the binary to bin
+    bin.install_symlink libexec/"stylobot"
+    # Install config to etc
     (etc/"stylobot").mkpath
-    (etc/"stylobot").install "appsettings.json"
-    (etc/"stylobot").install "appsettings.production.json" if File.exist?("appsettings.production.json")
+    (etc/"stylobot").install libexec/"appsettings.json" if (libexec/"appsettings.json").exist?
   end
 
   def caveats
