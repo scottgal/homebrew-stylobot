@@ -1,26 +1,26 @@
 class Stylobot < Formula
   desc "Self-hosted bot detection with 31 detectors, session vectors, and zero PII"
   homepage "https://stylobot.net"
-  version "5.6.23"
+  version "5.6.24"
   license "Unlicense"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-osx-arm64.tar.gz"
-      sha256 "fe604bada255b91f3a15805d8d3dff072058bc1b0139e5b9168124862dde085e"
+      sha256 "b0844984b9387902d9a4dd4de58bd12ab3c72f73f12ebfe806f7af834e0d7cb7"
     else
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-osx-x64.tar.gz"
-      sha256 "7dc4027675bcc4452ebb49be1e4228d1efaa4c73596013f651e9aa169891242f"
+      sha256 "07aa6aa76c79040accd69b1affb71051b1601aa615ccee63bf143f1495c75849"
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-linux-arm64.tar.gz"
-      sha256 "9d890021f4eaffe2057d7a3782550192ef5acffc47f56ad32ab6f3eb76b2fd68"
+      sha256 "e16810bf50fa9d60a63bf4718bf46ff4641f91646d0bda0177d0f34a517074ec"
     else
       url "https://github.com/scottgal/stylobot/releases/download/console-v#{version}/stylobot-linux-x64.tar.gz"
-      sha256 "0f8460ba888bff861448f211c409aa096a7852997215c087fd45373e8d1010c8"
+      sha256 "7adec66f803c069cfdbc7ab9cb420f175e6bed51544f6eaa4b8dac49f46bf781"
     end
   end
 
